@@ -1,11 +1,9 @@
+*.pyc
 __pycache__
 myenv/*
 .DS_Store
-/solutions/__pycache__
+solutions/__pycache__
 .streamlit/secrets.toml
-./solutions/tools/__pycache__
-.models/ST-clip/0_CLIPModel/pytorch_model.bin
+solutions/tools/__pycache__
 __pycache__/utils.cpython-312.pyc
-*.pyc
-*.pyc
-*.pyc
+models/ST-clip/0_CLIPModel/pytorch_model.bin
