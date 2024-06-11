@@ -43,21 +43,12 @@ query:
 
 OUTPUT:
 """
-# tag::setup[]
-# Page Config
-st.set_page_config("Ebert", page_icon=":movie_camera:")
-# end::setup[]
+
+st.set_page_config("Shop AI", page_icon=":movie_camera:")
+
 
 st.write("# Welcome to AI Shooping! 👋")
 
-# st.markdown("""
-# This component supports **markdown formatting**, which is handy.
-
-# [Check out their documentation](https://docs.streamlit.io) for more information on how to get started.
-# """)
-
-# tag::session[]
-# Set up Session State
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {
@@ -69,23 +60,6 @@ if "messages" not in st.session_state:
 
 if "cart_items" not in st.session_state:
     st.session_state.cart_items = []
-    # [
-    #     {
-    #         "ProductName": "chai",
-    #         "UnitPrice": 18.00,
-    #         "QuantityPerUnit": 1,
-    #         "NumberOfUnitOrdered": 1,
-    #         "CategoryID":1
-    #     },
-    #     {
-    #         "ProductName": "ii",
-    #         "UnitPrice": 18.00,
-    #         "QuantityPerUnit": 1,
-    #         "NumberOfUnitOrdered": 1
-    #         "CategoryID":1
-    #     }
-    # ]
-# end::session[]
 
 def generate_answer_dialog(context:str, question:str):
     return (
@@ -186,9 +160,6 @@ def handle_submit(message):
 
     # Handle the response
     with st.spinner('Thinking...'):
-        # # TODO: Replace this with a call to your LLM
-        #list_product_items('assistant', message, items)
-        #response = generate_cypher(message)
         query_processor(message)
  
         
