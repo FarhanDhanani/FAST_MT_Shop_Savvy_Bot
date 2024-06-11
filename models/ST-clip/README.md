@@ -1,3 +1,5 @@
+download pytorch_model.bin file from the following URL and place it inside 0_CLIPModel folder
+- https://huggingface.co/sentence-transformers/clip-ViT-B-32/tree/main/0_CLIPModel
 ---
 library_name: sentence-transformers
 tags:
