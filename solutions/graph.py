@@ -11,11 +11,12 @@ graph = Neo4jGraph(
     password=st.secrets["NEO4J_PASSWORD"],
 )
 
-@chain
+
 def run_cypher_statment(
     cypherQuery
     ):
     response = graph.query(cypherQuery)
+    #return [json.dumps(r['p']) for r in response]
     return json.dumps(response);
 
 def get_simple_content_based_query(category_ids: list[int], product_list:list[int]):

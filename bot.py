@@ -1,40 +1,18 @@
 import re
-import json
-import time
 import streamlit as st
-from time import sleep
 from utils import MessageType
-from utils import list_product_items, list_cart_items, get_cart_items
+from utils import list_cart_items, get_cart_items
 from utils import write_message, render_messages, display_product_details
-#from solutions.agent import generate_response
-from operator import itemgetter
-from langchain import PromptTemplate
-from langchain_core.runnables import chain
-from langchain.chains import LLMChain, SequentialChain
 
-from langchain_core.output_parsers import StrOutputParser
-from langchain.retrievers.multi_query import MultiQueryRetriever
-
-from solutions.llm import cypher_llm, llm
 from solutions.graph import run_cypher_statment
 
 from solutions.tools.video_search import user_query_search_in_video
-from solutions.tools.multiQueryRetriever import multi_retriever_query
-from solutions.tools.vector import neo4jSimillaritySearchUsingK, retriever
+from solutions.tools.multiQueryRetriever import format_generated_queries, get_unique_union, listMapper
 from solutions.tools.commands import COMMAND_01, COMMAND_02 ,COMMAND_03, COMMAND_04, COMMAND_05
 from solutions.tools.pintrest_video_downloader import process_video_file
-from solutions.tools.cypher import generate_cypher, get_cypher_prompt, get_graph_scheema, CYPHER_GENERATION_TEMPLATE, CYPHER_GENERATION_PRODUCT_DETAILS_TEMPLATE
+from solutions.tools.cypher import get_graph_scheema
 
-BOT_PROMPT = """
-You are a shopping assistant AI tasked with helping users find products and provide information about them. 
-Given a user query and provided context, generate a short and to the point answer response providing assistance and information about products.
-
-context:
-{context}
-
-question:
-{question}
-"""
+from solutions.memory import llm_chain, cypher_chain, cypher_chain_product_details, multi_retriever_query_chain
 
 VIDEO_QUERY_PROCESSING_PROMPT = """
 Given a user query containing a query and a URL, extract the query and URL parts and return them as a JSON object with no extra formatting or styling
@@ -61,49 +39,47 @@ if "messages" not in st.session_state:
 if "cart_items" not in st.session_state:
     st.session_state.cart_items = []
 
-def generate_answer_dialog(context:str, question:str):
-    return (
+def generate_answer_dialog(context, query:str):
+    return llm_chain({"context": context, "human_input": query}, return_only_outputs=True)
+
+
+def multi_retriever_query_with_memory(question: str, n_variants:int):
+    response = multi_retriever_query_chain({"n": n_variants, "human_input": question}, return_only_outputs=True)
+    formated_response = format_generated_queries(q=response['text'])
+    return formated_response
+
+def query_processor_dialogue_generation(message:str):
+    multi_query = multi_retriever_query_with_memory(question=message, n_variants=1)
+    docs = get_unique_union(listMapper(multi_query))
+    schema = get_graph_scheema()
+    cypher_query = cypher_chain(
         {
-                "context": itemgetter("context"),
-                "question": itemgetter("question") 
-        } 
-        | PromptTemplate.from_template(template=BOT_PROMPT)
-        | llm
+            "input_documents": docs, 
+            "human_input":  message + " | " + " | ".join(multi_query), 
+            "schema":schema
+        }, 
+        return_only_outputs=True
     )
+    cypher_response = run_cypher_statment(cypher_query["output_text"])
 
-def get_cypher_chain(cypher_template:str):
-    return (
+    dialog_response = generate_answer_dialog(context=cypher_response, 
+                                            query=message +
+                                            " based on the response from the Database")
+    return dialog_response['text']
+
+def query_processor_product_get_details(message:str):
+    multi_query = multi_retriever_query_with_memory(question=message, n_variants=1)
+    docs = get_unique_union(listMapper(multi_query))
+    schema = get_graph_scheema()
+    cypher_query = cypher_chain_product_details(
         {
-            "context": multi_retriever_query(),
-            "schema": itemgetter('schema'),
-            "question": itemgetter("question")
-        }
-        | PromptTemplate.from_template(template=cypher_template)
-        | cypher_llm 
-        | run_cypher_statment
-    ) 
-
-def query_processor_dialogue_generation(message:str, cypher_template:str):
-    cypher_chain = get_cypher_chain(cypher_template=cypher_template)
-    cypher_response = cypher_chain.invoke({
-        "question":message,
-        "k":1,
-        "schema":get_graph_scheema()
-    })
-    dialog_response_chain = generate_answer_dialog(context=cypher_response, question=message)
-    dialog_response =  dialog_response_chain.invoke({
-        "question":message,
-        "context":cypher_response
-    })
-    return dialog_response
-
-def query_processor_product_get_details(message:str, cypher_template:str):
-    cypher_chain = get_cypher_chain(cypher_template=cypher_template)
-    cypher_response = cypher_chain.invoke({
-        "question":message,
-        "k":1,
-        "schema":get_graph_scheema()
-    })
+            "input_documents": docs, 
+            "human_input": message, 
+            "schema":schema
+        }, 
+        return_only_outputs=True
+    )
+    cypher_response = run_cypher_statment(cypher_query["output_text"])
     return cypher_response
 
 def query_processor_for_video(message:str):
@@ -131,8 +107,7 @@ def query_processor_for_video(message:str):
 
 def query_processor(message:str)->str:
     if((re.search(COMMAND_01, message)) or (re.search(COMMAND_02, message))):
-        product_details = query_processor_product_get_details(message, 
-                                                              CYPHER_GENERATION_PRODUCT_DETAILS_TEMPLATE)
+        product_details = query_processor_product_get_details(message)
         display_product_details(product_details=product_details,
                                 content="",
                                 grace_message="We apologize, but we couldn't find the mentioned products in our store.")
@@ -142,8 +117,7 @@ def query_processor(message:str)->str:
     elif(re.search(COMMAND_05, message)):
         query_processor_for_video(message)
     else:
-        dialog_response = query_processor_dialogue_generation(message, 
-                                                              CYPHER_GENERATION_TEMPLATE)
+        dialog_response = query_processor_dialogue_generation(message)
         write_message('assistant', dialog_response)
     return ;
 

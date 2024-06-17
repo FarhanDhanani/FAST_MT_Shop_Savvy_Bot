@@ -18,10 +18,10 @@ Do not use any other relationship types or properties that are not provided.
 Output only Cypher query statements with no extra information, as shown in example below
 
 Example 
-Question: 
+Human: 
 "List all the products names with a price greater than $100"
 
-Output:
+Chatbot:
 "MATCH (p:Product) WHERE p.UnitPrice > 100 RETURN p"
 
 Context
@@ -30,10 +30,11 @@ Context
 Schema:
 {schema}
 
-Question:
-{question}
+{chat_history}
 
-Output:
+Human: {human_input}
+
+Chatbot:
 """
 
 
@@ -49,10 +50,10 @@ Use only the provided relationship types and properties in the schema and the pr
 Output only Cypher query statements with no extra information, as shown in the example below:
 
 Example 
-Question: 
+Human: 
 "List all the products names with a price greater than $100"
 
-Output:
+Chatbot:
 "MATCH (p:Product) WHERE p.UnitPrice > 100 RETURN p"
 
 Context:
@@ -61,10 +62,11 @@ Context:
 Schema:
 {schema}
 
-Question:
-{question}
+{chat_history}
 
-Output:
+Human: {human_input}
+
+Chatbot:
 """
 
 def construct_schema(

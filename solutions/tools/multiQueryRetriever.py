@@ -26,9 +26,11 @@ Ensure to include original question as well in the output list in English
 
 Ensure each version is in clear English language
 
-Original question: {question}
+{chat_history}
 
-Output:
+Human: {human_input}
+
+Chatbot:
 """
 
 JSON_FORMAT_TEMPLATE = """
@@ -52,13 +54,25 @@ def get_unique_union(documents: list[list]):
 
     loaded_docs =  [loads(doc) for doc in unique_docs]
     # Return
-    return get_unique_documents(loaded_docs)
+    return get_unique_docs(loaded_docs)
 
 def clean_json(product_json:str)->str:
     json_str = product_json.replace("\r", '')
     json_str = json_str.replace("\n", '')
     json_str = json_str.replace("\'", '')
     return json_str
+
+def get_unique_docs(documents: list):
+    unique_product_ids = set()
+    unique_product_and_sim_score = []
+    for doc in documents:
+        page_content_str = clean_json(doc.page_content)
+        doc_object = json.loads(page_content_str)
+        doc_product_id = doc_object["ProductID"]
+        if doc_product_id not in unique_product_ids:
+            unique_product_ids.add(doc_product_id)
+            unique_product_and_sim_score.append(doc)
+    return unique_product_and_sim_score
 
 def get_unique_documents(documents: list):
     unique_product_ids = set()
