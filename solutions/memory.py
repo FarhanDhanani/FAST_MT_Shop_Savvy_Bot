@@ -1,3 +1,4 @@
+from config import Config
 from langchain_core.prompts import PromptTemplate
 from langchain.memory import ConversationBufferWindowMemory
 from langchain.chains import LLMChain
@@ -20,7 +21,7 @@ Human: {human_input}
 Chatbot:
 """
 
-bot_memory = ConversationBufferWindowMemory(memory_key="chat_history", input_key="human_input", k=2)
+bot_memory = ConversationBufferWindowMemory(memory_key="chat_history", input_key="human_input", k=Config.MEMORY_MSG_BUFFER)
 bot_prompt = PromptTemplate(
     input_variables=["chat_history", "human_input", "context"], template=BOT_PROMPT
 )
@@ -45,7 +46,7 @@ cypher_chain_product_details = load_qa_chain(
 )
 
 multi_retriever_query_prompt = PromptTemplate(
-    input_variables=["chat_history", "n","human_input"],
+    input_variables=["chat_history", "n", "human_input"],
     template=MULTI_QUERY_RETRIVAL_TEMPLATE
 )
 multi_retriever_query_chain = LLMChain(

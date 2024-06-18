@@ -1,13 +1,10 @@
 import os
 import re
 import cv2
-import glob
 import json
 import requests
 import urllib.request
-from PIL import Image
-from sentence_transformers import SentenceTransformer, util
-from solutions.tools.video_search import  FOLDER_NAME, ROOT_PATH, FILE_NAME_HEAD
+from config import Config
 
 CAPTURE_FRAME_RATE = 1000
 
@@ -66,20 +63,20 @@ def process_video_file(url, save_with_name)->bool:
             return False
 
         try:
-            if not os.path.exists(FOLDER_NAME):
-                os.makedirs(FOLDER_NAME)
+            if not os.path.exists(Config.SAVE_VIDEO_FILE_IN_FOLDER_NAME):
+                os.makedirs(Config.SAVE_VIDEO_FILE_IN_FOLDER_NAME)
         except OSError:
             print ('Error: Creating directory of data')
             return False
         
         currentFrame = 0
         while(True):
-            cap.set(cv2.CAP_PROP_POS_MSEC, currentFrame * CAPTURE_FRAME_RATE)
+            cap.set(cv2.CAP_PROP_POS_MSEC, currentFrame * Config.VIDEO_CAPTURE_FRAME_RATE)
             # Capture frame-by-frame
             ret, frame = cap.read()
             if ret:
                 # Saves image of the current frame in jpg file
-                name = ROOT_PATH + FILE_NAME_HEAD + str(currentFrame) + '.jpg'
+                name = Config.SAVE_VIDEO_FILE_ON_ROOT_PATH + Config.SAVE_FILE_NAME_WITH_HEAD + str(currentFrame) + '.jpg'
                 print ('Creating...' + name)
                 cv2.imwrite(name, frame)
                 # To stop duplicate images

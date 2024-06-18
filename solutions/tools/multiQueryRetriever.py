@@ -2,6 +2,7 @@ import re
 import ast
 import json
 import numpy as np
+from config import Config
 from operator import itemgetter
 from solutions.llm import cypher_llm, llm
 from langchain import PromptTemplate
@@ -11,8 +12,6 @@ from solutions.tools.vector import neo4jvector
 from langchain_core.output_parsers import StrOutputParser
 from solutions.tools.silhouetteScore import get_K_relevant_records
 
-FETCH_K_DOCUMENTS_FOR_EACH_QUERY = 3
-MINIMUM_CUTOFF_THRESHOLD:float = 0.0
 
 # Multi Query: Different Perspectives
 MULTI_QUERY_RETRIVAL_TEMPLATE = """
@@ -38,11 +37,10 @@ Return the JSON string with correct syntax containing a list of strings having n
 {input}
 """
 
-MAX_TRIES_TO_CORRECT_JSON_STRING = 3
 
-neo4jvectorMultiQueryRetrieverTopK =  neo4jvector.as_retriever(search_kwargs={"k": FETCH_K_DOCUMENTS_FOR_EACH_QUERY})
+neo4jvectorMultiQueryRetrieverTopK =  neo4jvector.as_retriever(search_kwargs={"k": Config.FETCH_K_DOCUMENTS_FOR_EACH_QUERY})
 neo4jvectorMultiQueryRetrieverThreshold = neo4jvector.as_retriever(search_type="similarity_score_threshold", 
-                                                                   search_kwargs={'score_threshold': MINIMUM_CUTOFF_THRESHOLD})
+                                                                   search_kwargs={'score_threshold': Config.MINIMUM_CUTOFF_THRESHOLD_FOR_SIMILARITY_SEARCH})
 
 
 def get_unique_union(documents: list[list]):
@@ -112,7 +110,7 @@ def format_generated_queries(q:str, no_of_tries=0):
     try:
         list_of_queries = ast.literal_eval(q)
     except Exception as e:
-        if(no_of_tries<MAX_TRIES_TO_CORRECT_JSON_STRING):
+        if(no_of_tries<Config.MAX_TRIES_TO_CORRECT_JSON_STRING):
             correct_format_chain = (PromptTemplate.from_template(template=JSON_FORMAT_TEMPLATE) | cypher_llm)
             formated_query = format_generated_queries(correct_format_chain.invoke({"input":q}), no_of_tries+1)
             return formated_query

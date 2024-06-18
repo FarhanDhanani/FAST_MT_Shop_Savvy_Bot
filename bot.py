@@ -13,6 +13,7 @@ from solutions.tools.pintrest_video_downloader import process_video_file
 from solutions.tools.cypher import get_graph_scheema
 
 from solutions.memory import llm_chain, cypher_chain, cypher_chain_product_details, multi_retriever_query_chain
+from config import Config
 
 VIDEO_QUERY_PROCESSING_PROMPT = """
 Given a user query containing a query and a URL, extract the query and URL parts and return them as a JSON object with no extra formatting or styling
@@ -43,13 +44,13 @@ def generate_answer_dialog(context, query:str):
     return llm_chain({"context": context, "human_input": query}, return_only_outputs=True)
 
 
-def multi_retriever_query_with_memory(question: str, n_variants:int):
-    response = multi_retriever_query_chain({"n": n_variants, "human_input": question}, return_only_outputs=True)
+def multi_retriever_query_with_memory(question: str):
+    response = multi_retriever_query_chain({"n": Config.N_VARIANTS_OF_MULTI_QUERY, "human_input": question}, return_only_outputs=True)
     formated_response = format_generated_queries(q=response['text'])
     return formated_response
 
 def query_processor_dialogue_generation(message:str):
-    multi_query = multi_retriever_query_with_memory(question=message, n_variants=1)
+    multi_query = multi_retriever_query_with_memory(question=message)
     docs = get_unique_union(listMapper(multi_query))
     schema = get_graph_scheema()
     cypher_query = cypher_chain(
@@ -68,7 +69,7 @@ def query_processor_dialogue_generation(message:str):
     return dialog_response['text']
 
 def query_processor_product_get_details(message:str):
-    multi_query = multi_retriever_query_with_memory(question=message, n_variants=1)
+    multi_query = multi_retriever_query_with_memory(question=message)
     docs = get_unique_union(listMapper(multi_query))
     schema = get_graph_scheema()
     cypher_query = cypher_chain_product_details(
@@ -92,10 +93,10 @@ def query_processor_for_video(message:str):
         query = query.replace(COMMAND_05, "")
         query = query.strip()
    
-        is_processed_successfully = process_video_file(video_url, "abc.mp4")
+        is_processed_successfully = process_video_file(video_url, Config.SAVE_VIDEO_WITH_NAME)
 
         if is_processed_successfully:
-            product_details = user_query_search_in_video(query)
+            product_details = user_query_search_in_video(query, Config.FIND_K_RELEVANT_FRAMES_IN_VIDEO)
             display_product_details(product_details=product_details,
                                     content="",
                                     grace_message="We apologize, but we couldn't find the mentioned products in our store.")
