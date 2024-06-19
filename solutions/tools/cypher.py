@@ -47,14 +47,14 @@ Write a Cypher query to retrieve all the details of the products relevant to the
 
 Use only the provided relationship types and properties in the schema and the provided context. Do not use any other relationship types or properties that are not provided.
 
-Output only Cypher query statements with no extra information, as shown in the example below:
+Output only Cypher query statements as a string value with no extra information, formating style, extra brackets or extra quotes, as shown in the example below:
 
 Example 
 Human: 
-"List all the products names with a price greater than $100"
+List all the products names with a price greater than $100
 
 Chatbot:
-"MATCH (p:Product) WHERE p.UnitPrice > 100 RETURN p"
+MATCH (p:Product) WHERE p.UnitPrice > 100 RETURN p
 
 Context:
 {context}

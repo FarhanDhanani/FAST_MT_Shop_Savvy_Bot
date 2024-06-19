@@ -1,15 +1,21 @@
 import json
 import requests
 from tqdm import tqdm
+import streamlit as st
+from config import Config
 from overrides import overrides
 from typing import Any, List, Mapping, Optional
 from langchain_community.chat_models import ChatOllama
 from langchain_core.callbacks.manager import CallbackManagerForLLMRun
 from langchain_core.language_models.llms import LLM
 
+from langchain_openai import ChatOpenAI
+
 OLLAMA_LLM_URL = "/api/generate"
 MODEL_NAME = "llama3"
 CYPHER_MODEL_NAME = "codegemma"
+
+OPEN_AI_MODEL_NAME = "gpt-3.5-turbo"
 
 class CustomLLM(LLM):
     """
@@ -64,6 +70,14 @@ class CustomLLM(LLM):
              "stream": False 
         })
 
-llm  = CustomLLM(model=MODEL_NAME)
-cypher_llm = CustomLLM(model=CYPHER_MODEL_NAME)
+open_ai_chat_model =  ChatOpenAI(
+        model=OPEN_AI_MODEL_NAME,
+        temperature=0,
+        max_retries=2,
+        api_key=st.secrets["OPEN_AI_KEY"], 
+)
+
+llm = open_ai_chat_model if Config.USE_OPEN_AI_CHAT_MODEL else CustomLLM(model=MODEL_NAME)
+cypher_llm = open_ai_chat_model if Config.USE_OPEN_AI_CHAT_MODEL else CustomLLM(model=CYPHER_MODEL_NAME)
+
 #llm = ChatOllama(model=MODEL_NAME) #CustomLLM(model=MODEL_NAME)

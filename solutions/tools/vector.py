@@ -1,4 +1,5 @@
 import streamlit as st
+from config import Config
 from langchain_community.vectorstores.neo4j_vector import Neo4jVector
 from langchain.chains.qa_with_sources import load_qa_with_sources_chain
 from langchain.chains import RetrievalQA
@@ -6,16 +7,25 @@ from solutions.llm import llm
 from langchain_core.runnables import chain
 from solutions.embedder import embeddings
 
+INDEX_NAME_LOCAL_MXBAI_EMBEDDINGS = "productsMetaIndex"
+EMBEDDING_NODE_PROPERTY_LOCAL_MXBAI_EMBEDDINGS = "mxbai-embeddings"
+
+INDEX_NAME_OPEN_AI_TEXT_EMBEDDING_3_SMALL = "productsMetaIndex2"
+EMBEDDING_NODE_PROPERTY_OPEN_AI_TEXT_EMBEDDING_3_SMALL = "text-embedding-3-small"
+
+index_name = INDEX_NAME_OPEN_AI_TEXT_EMBEDDING_3_SMALL if Config.USE_OPEN_AI_EMBEDDER else INDEX_NAME_LOCAL_MXBAI_EMBEDDINGS
+embedding_node_property = EMBEDDING_NODE_PROPERTY_OPEN_AI_TEXT_EMBEDDING_3_SMALL if Config.USE_OPEN_AI_EMBEDDER else EMBEDDING_NODE_PROPERTY_LOCAL_MXBAI_EMBEDDINGS
+
 # tag::vector[]
 neo4jvector = Neo4jVector.from_existing_index(
-    embeddings,                                 # <1>
-    url=st.secrets["NEO4J_URI"],                # <2>
-    username=st.secrets["NEO4J_USERNAME"],      # <3>
-    password=st.secrets["NEO4J_PASSWORD"],      # <4>
-    index_name="productsMetaIndex",             # <5>
-    node_label="Product",                       # <6>
-    text_node_property="ProductMetaInfo",       # <7>
-    embedding_node_property="mxbai-embeddings", # <8>
+    embeddings,                                         # <1>
+    url=st.secrets["NEO4J_URI"],                        # <2>
+    username=st.secrets["NEO4J_USERNAME"],              # <3>
+    password=st.secrets["NEO4J_PASSWORD"],              # <4>
+    index_name=index_name,                              # <5>
+    node_label="Product",                               # <6>
+    text_node_property="ProductMetaInfo",               # <7>
+    embedding_node_property=embedding_node_property,    # <8>
     retrieval_query="""
 RETURN
     node.ProductMetaInfo AS text,

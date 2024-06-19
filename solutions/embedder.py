@@ -1,4 +1,5 @@
 import json
+import streamlit as st
 import requests
 from tqdm import tqdm
 from overrides import overrides
@@ -7,9 +8,12 @@ from typing import Any, Dict, List, Mapping, Optional
 from langchain_core.embeddings import Embeddings
 from langchain_core.pydantic_v1 import BaseModel, Extra
 
+from langchain_openai import OpenAIEmbeddings
+from config import Config
+
 OLLAMA_EMBED_URL = "/api/embeddings"
 EMBEDDING_MODEL_NAME = "mxbai-embed-large"
-
+OPEN_AI_EMBED_MODEL_NAME = "text-embedding-3-small"
 
 class CustomEmbedder(BaseModel, Embeddings):
 
@@ -130,4 +134,4 @@ class CustomEmbedder(BaseModel, Embeddings):
         embedding = self._embed([instruction_pair])[0]
         return embedding
 
-embeddings = CustomEmbedder(model=EMBEDDING_MODEL_NAME)
+embeddings = OpenAIEmbeddings(model=OPEN_AI_EMBED_MODEL_NAME,  openai_api_key=st.secrets["OPEN_AI_KEY"]) if Config.USE_OPEN_AI_EMBEDDER else CustomEmbedder(model=EMBEDDING_MODEL_NAME)
