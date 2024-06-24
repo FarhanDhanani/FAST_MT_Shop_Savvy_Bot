@@ -15,6 +15,9 @@ from solutions.tools.cypher import get_graph_scheema
 from solutions.memory import llm_chain, cypher_chain, cypher_chain_product_details, multi_retriever_query_chain
 from config import Config
 
+from solutions.tools.voice import whisper_stt
+from streamlit_mic_recorder import mic_recorder
+
 VIDEO_QUERY_PROCESSING_PROMPT = """
 Given a user query containing a query and a URL, extract the query and URL parts and return them as a JSON object with no extra formatting or styling
 query:
@@ -24,7 +27,7 @@ OUTPUT:
 """
 
 st.set_page_config("Shop AI", page_icon=":movie_camera:")
-
+audio_text = None
 
 st.write("# Welcome to AI Shooping! 👋")
 
@@ -151,6 +154,20 @@ with st.sidebar:
     st.write(COMMAND_04+"\n")
     st.subheader("Command to pose Video Query")
     st.write(COMMAND_05)
+    st.header("AUDIO COMMANDS")
+    if Config.USE_OPEN_AI_WHISPER_MODEL:
+        audio = mic_recorder(start_prompt="START RECORD ⏺️",  stop_prompt="STOP RECORD ⏹️", just_once=False,
+                            use_container_width=False, key=None)
+
+        if audio:
+            st.audio(audio['bytes'])
+            text = whisper_stt(audio, openai_api_key=st.secrets["OPEN_AI_KEY"], language = 'en')
+            if text:
+                print(text)
+                audio_text = text
+    else:
+        st.write("Please turn on WHISPER OPEN AI from Config")
+
 
 # tag::chat[]
 # Display messages in Session State
@@ -158,10 +175,12 @@ render_messages(st.session_state.messages)
 
 
 # Handle any user input
-if prompt := st.chat_input("What is up?"):
+if prompt := st.chat_input("What is up?") or audio_text:
     # Display user message in chat message container
     write_message('user', prompt)
 
     # Generate a response
     handle_submit(prompt)
+
+    audio_text = None
 # end::chat[]
