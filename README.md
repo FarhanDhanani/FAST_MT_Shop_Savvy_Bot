@@ -17,9 +17,9 @@ To run the application locally, you must setup following thigs
 - download the "pytorch_model.bin" file from the following URL and place it inside ./models/ST-clip/0_CLIPModel/ directory
     - [clip-ViT-B-32 model from huggingface repository](https://huggingface.co/sentence-transformers/clip-ViT-B-32/tree/main/0_CLIPModel) 
         - Model size: 605MB, its a small model and can be run easily at local. I have tested it on 2017 MacBook Pro with following details
-        - Processor: 3.1 GHz Quad-Core Intel Core i7
-        - Graphics: Radeon Pro 555 2 GB Intel HD Graphics 630 1536 MB
-        - Memory: 16 GB 2133 MHz LPDDR3
+            - Processor: 3.1 GHz Quad-Core Intel Core i7
+            - Graphics: Radeon Pro 555 2 GB Intel HD Graphics 630 1536 MB
+            - Memory: 16 GB 2133 MHz LPDDR3
 
 ## Download and Setup OLLAMA
 ### Please note if you are willing to use OPEN AI key, and have paid account of OpenAI then you don't need to setup the OLLAMA
