@@ -1,6 +1,6 @@
 # A Neo4j-backed Chatbot using Python
 ## **FAST-MT TEAM SUBMISSION TO [SECURITY-AI-CHALLENGE](https://aichallenge.pk/)**
-The repository contains our submission to the MLMAC CONTEST. Overall our submission got fourth-ranked of the competition.
+The repository contains our submission to the [SECURITY AI CHALLENGE](https://aichallenge.pk/).
 [![N|Solid](https://upload.wikimedia.org/wikipedia/en/e/e4/National_University_of_Computer_and_Emerging_Sciences_logo.png)](https://nodesource.com/products/nsolid)
 
 # SHOP SAVY BOT
@@ -74,7 +74,8 @@ Open the Desktop application of Neo4j and follow the steps mentioned below.
 
 ## SETUP SECRETS.toml
     1. Create a secrets.toml file inside the (.streamlit) directory with the following contents
-![Alt text](images/secretFile/secrets toml file contents.png)
+![Alt text](images/secretFile/secretsTomlFileContents.png)
+
 To run the application, you must install the libraries listed in `requirements.txt`.
 
 ## RUN THE PROJECT
