@@ -77,6 +77,27 @@ Open the Desktop application of Neo4j and follow the steps mentioned below.
 ![Alt text](images/secretFile/secretsTomlFileContents.png)
 
 To run the application, you must install the libraries listed in `requirements.txt`.
+## SETUP CONFIG FILE TO CONTROL THE PROJECT EXECUTION
+    1. Setup-Up Hyper Parameters:
+        - MEMORY_MSG_BUFFER = 10 #It is the Number of messages to be kept saved at any given time to maintain the chat conversion.
+        - N_VARIANTS_OF_MULTI_QUERY = 1 #It is the number of user query variants to be used while fetching answers through RAG.
+        - MAX_TRIES_TO_CORRECT_JSON_STRING = 3 #It is the number retries to correct the json output that contains an array of multiple query variants in the form of strings.
+        - MINIMUM_CUTOFF_THRESHOLD_FOR_SIMILARITY_SEARCH  :float = 0.0 #It is the minimum threshold of simillarity to fetch the document from graph database.
+    2. Model Selection
+        - USE_OPEN_AI_EMBEDDER = False #If it is set to true then open Embedder will be used. Otherwise ollama embedder will be used.
+        - USE_OPEN_AI_CHAT_MODEL = False #If it is set to true then open Chat Model will be used. Otherwise ollama chat model will be used.
+        - USE_OPEN_AI_WHISPER_MODEL = True #If it is set to true then open whisper model will be used. Otherwise, voice search feature will be disabled.
+        
+    3. Setup CLIP parameters to enable Video (from pintrest url) based search
+        - VIDEO_CAPTURE_FRAME_RATE = 1000 #Frame rate to split the video into stream of images. 
+        - FIND_K_RELEVANT_FRAMES_IN_VIDEO = 1 #Number of relevant frames that needs to be identified based on the given user query.
+        - SAVE_VIDEO_WITH_NAME = "abc.mp4" #Name of file to save after downloading it from the given url.
+        - SAVE_VIDEO_FILE_IN_FOLDER_NAME = "data" #Name of folder where splitted video frames will get saved. 
+        - SAVE_VIDEO_FILE_ON_ROOT_PATH = "./"+SAVE_VIDEO_FILE_IN_FOLDER_NAME+"/" #Path where splitted video frames will get saved.
+        - SAVE_FILE_NAME_WITH_HEAD = "frame"  #Head name with splitted video frames will get saved with prefix of number in sequence ordering.
+        - ST_CLIP_MODEL_PATH = './models/ST-clip' #Path where CLIP model is saved.
+        
+![Alt text](images/configFile/configFile.png)
 
 ## RUN THE PROJECT
     1. First Create a virtual enviroment with the following command.
