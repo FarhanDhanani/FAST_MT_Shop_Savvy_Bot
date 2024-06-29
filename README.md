@@ -8,9 +8,11 @@ The repository contains our submission to the [SECURITY AI CHALLENGE](https://ai
 A Neo4j-OpenAI-&-OLLAMA-backed Chatbot using Python/Streamlit
 
 To run the application locally, you must setup following thigs
-- Neo4j Desktop Version
+- CLIP Model (for video processing) 
 - OLLAMA or OPEN AI account
-- CLIP Model (for video processing)
+- Neo4j Desktop Version
+- secrets.toml file
+- Config File
 
 ## SETUP CLIP Model
 
