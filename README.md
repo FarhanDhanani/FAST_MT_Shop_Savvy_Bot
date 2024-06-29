@@ -1,6 +1,6 @@
 # A Neo4j-backed Chatbot using Python
 ## **FAST-MT TEAM SUBMISSION TO [SECURITY-AI-CHALLENGE](https://aichallenge.pk/)**
-The repository contains our submission to the MLMAC CONTEST. Overall our submission got fourth-ranked of the competition.
+The repository contains our submission to the SECURITY AI CHALLENGE CONTEST.
 [![N|Solid](https://upload.wikimedia.org/wikipedia/en/e/e4/National_University_of_Computer_and_Emerging_Sciences_logo.png)](https://nodesource.com/products/nsolid)
 
 # SHOP SAVY BOT
