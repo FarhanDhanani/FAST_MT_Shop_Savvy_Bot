@@ -72,14 +72,22 @@ Open the Desktop application of Neo4j and follow the steps mentioned below.
     10. Open (./neo4jScripts/NEO-4J MIGRATION SCRIPTS LOCAL.md) file, and execute the cypher statements from SCRIPT-1 to SCRIPT-10, iteratively, one by one, as shown in the screenshot below.
 ![Alt text](images/neo4j/10.1.png) ![Alt text](images/neo4j/10.2.png)
 
-
+## SETUP SECRETS.toml
+    1. Create a secrets.toml file inside the (.streamlit) directory with the following contents
+![Alt text](images/secretFile/secrets toml file contents.png)
 To run the application, you must install the libraries listed in `requirements.txt`.
 
-[source,sh]
-pip install -r requirements.txt
-
-
-Then run the `streamlit run` command to start the app on link:http://localhost:8501/[http://localhost:8501/^].
-
-[source,sh]
+## RUN THE PROJECT
+    1. First Create a virtual enviroment with the following command.
+```sh
+source myenv/bin/activate
+```
+    2. Ensure the virtual enviroment is activated and all the dependedncies are installed correctly with the following commands
+```sh
+pip3 install -r requirements.txt
+```
+    
+    3. Lastly, make sure that neo4j database server is up and running then run the `streamlit run` command to start the app. 
+```sh
 streamlit run bot.py
+```
