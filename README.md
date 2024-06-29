@@ -74,7 +74,8 @@ Open the Desktop application of Neo4j and follow the steps mentioned below.
 
 ## SETUP SECRETS.toml
     1. Create a secrets.toml file inside the (.streamlit) directory with the following contents
-![Alt text](images/secretFile/secrets toml file contents.png)
+![Alt text](images/secretFile/secretsTomlFileContents.png)
+
 To run the application, you must install the libraries listed in `requirements.txt`.
 
 ## RUN THE PROJECT
