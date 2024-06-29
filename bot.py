@@ -156,7 +156,7 @@ with st.sidebar:
     st.write(COMMAND_05)
     st.header("AUDIO COMMANDS")
     if Config.USE_OPEN_AI_WHISPER_MODEL:
-        audio = mic_recorder(start_prompt="START RECORD ⏺️",  stop_prompt="STOP RECORD ⏹️", just_once=False,
+        audio = mic_recorder(start_prompt="START RECORD ⏺️",  stop_prompt="STOP RECORD ⏹️", just_once=True,
                             use_container_width=False, key=None)
 
         if audio:

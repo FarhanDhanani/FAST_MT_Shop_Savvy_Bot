@@ -109,10 +109,15 @@ def parse_list(text:str):
 def format_generated_queries(q:str, no_of_tries=0):
     try:
         list_of_queries = ast.literal_eval(q)
+        s=0/0;
     except Exception as e:
         if(no_of_tries<Config.MAX_TRIES_TO_CORRECT_JSON_STRING):
             correct_format_chain = (PromptTemplate.from_template(template=JSON_FORMAT_TEMPLATE) | cypher_llm)
-            formated_query = format_generated_queries(correct_format_chain.invoke({"input":q}), no_of_tries+1)
+            formated_query = ""
+            if Config.USE_OPEN_AI_CHAT_MODEL:
+                formated_query = format_generated_queries(correct_format_chain.invoke({"input":q}).content, no_of_tries+1)
+            else:
+                formated_query = format_generated_queries(correct_format_chain.invoke({"input":q}), no_of_tries+1)
             return formated_query
         else:
             custom_parsed_list = parse_list(q)
