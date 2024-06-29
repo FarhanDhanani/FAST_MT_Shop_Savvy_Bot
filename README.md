@@ -39,6 +39,8 @@ Open the Desktop application of Neo4j and follow the steps mentioned below.
 
     1. Create a new project by Clicking on the "new" icon and create project option.
 
+    ![Alt text](images/neo4j/1.png)
+
     2. Rename the project name to My Project by howering on the project name clicking the edit icon and then pressing the tick icon.
 
     3. Add a Local DBMS to the project by clicking on the "Add" button and then selecting the "Local DBMS" option. After that enter the details name/password of your Local Database and select *5.19.0* Version number, as shown in the screenshots below. Please select the specified version only. Lastly click the create button.
