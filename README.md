@@ -1,5 +1,7 @@
 # A Neo4j-backed Chatbot using Python
-
+## **FAST-MT TEAM SUBMISSION TO [SECURITY-AI-CHALLENGE](https://aichallenge.pk/)**
+The repository contains our submission to the MLMAC CONTEST. Overall our submission got fourth-ranked of the competition.
+[![N|Solid](https://upload.wikimedia.org/wikipedia/en/e/e4/National_University_of_Computer_and_Emerging_Sciences_logo.png)](https://nodesource.com/products/nsolid)
 
 # SHOP SAVY BOT
 
@@ -37,28 +39,38 @@ To run the application locally, you must setup following thigs
 After installation we need to setup the data
 Open the Desktop application of Neo4j and follow the steps mentioned below.
 
+
+
     1. Create a new project by Clicking on the "new" icon and create project option.
+![Alt text](images/neo4j/1.png)
 
     2. Rename the project name to My Project by howering on the project name clicking the edit icon and then pressing the tick icon.
+![Alt text](images/neo4j/2.png)
 
     3. Add a Local DBMS to the project by clicking on the "Add" button and then selecting the "Local DBMS" option. After that enter the details name/password of your Local Database and select *5.19.0* Version number, as shown in the screenshots below. Please select the specified version only. Lastly click the create button.
+    
+![Alt text](images/neo4j/3.1.png) ![Alt text](images/neo4j/3.2.png)
 
     4. Click three dots besides the "Open" Button then click on the "Open Folder" option and then click on the "Import" button. A local directory location will be open open up, we need to paste (./neo4jScripts/products.json & ./neo4jScripts/categories.json) data files here. 
+![Alt text](images/neo4j/4.1.png) ![Alt text](images/neo4j/4.2.png)
 
     5. Again click three dots besides the "Open" Button then click on the "Open Folder" option and then click on the "Configuration" option. A local directory location will be open open up, we need to paste (./neo4jScripts/apoc.conf) configuration files here. 
+![Alt text](images/neo4j/5.png)
 
     6. Clink on the header row of the newly created DB ("neo4j 5.19.0" in our case) to open-up the details of the setuped local DBMS and then click on "Plugins" -> Click on APOC and then click on "install" button.
+![Alt text](images/neo4j/6.png)
 
     7. Next Just click the "start" button, to start the Local DBMS.
-    
+![Alt text](images/neo4j/7.png)
+
     8. After that click the drop down button insied the "Open" Button on the top and select the "Neo4j Browser" option, as shown in the screen shot.
+![Alt text](images/neo4j/8.png)
 
     9. In the newly opend window, shown in the screenshot below, we will going to execute the cypher statements.
+![Alt text](images/neo4j/9.png)
 
     10. Open (./neo4jScripts/NEO-4J MIGRATION SCRIPTS LOCAL.md) file, and execute the cypher statements from SCRIPT-1 to SCRIPT-10, iteratively, one by one, as shown in the screenshot below.
-
-
-
+![Alt text](images/neo4j/10.1.png) ![Alt text](images/neo4j/10.2.png)
 
 
 To run the application, you must install the libraries listed in `requirements.txt`.
