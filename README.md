@@ -62,10 +62,10 @@ Open the Desktop application of Neo4j and follow the steps mentioned below.
     
 ![Alt text](images/neo4j/3.1.png) ![Alt text](images/neo4j/3.2.png)
 
-4. Click three dots besides the "Open" Button then click on the "Open Folder" option and then click on the "Import" button. A local directory location will be open open up, we need to paste ((./neo4jScripts/products.json)[neo4jScripts/products.json] and (./neo4jScripts/categories.json)[neo4jScripts/categories.json]) data files here. 
+4. Click three dots besides the "Open" Button then click on the "Open Folder" option and then click on the "Import" button. A local directory location will be open open up, we need to paste (./neo4jScripts/products.json and ./neo4jScripts/categories.json) data files here. 
 ![Alt text](images/neo4j/4.1.png) ![Alt text](images/neo4j/4.2.png)
 
-5. Again click three dots besides the "Open" Button then click on the "Open Folder" option and then click on the "Configuration" option. A local directory location will be open open up, we need to paste ((./neo4jScripts/apoc.conf)[neo4jScripts/apoc.conf]) configuration files here. 
+5. Again click three dots besides the "Open" Button then click on the "Open Folder" option and then click on the "Configuration" option. A local directory location will be open open up, we need to paste (./neo4jScripts/apoc.conf) configuration files here. 
 ![Alt text](images/neo4j/5.png)
 
 6. Clink on the header row of the newly created DB ("neo4j 5.19.0" in our case) to open-up the details of the setuped local DBMS and then click on "Plugins" -> Click on APOC and then click on "install" button.
