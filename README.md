@@ -7,12 +7,21 @@ The repository contains our submission to the [SECURITY AI CHALLENGE](https://ai
 
 A Neo4j-OpenAI-&-OLLAMA-backed Chatbot using Python/Streamlit
 
-To run the application locally, you must setup following thigs
-- CLIP Model (for video processing) 
-- OLLAMA or OPEN AI account
-- Neo4j Desktop Version
-- secrets.toml file
-- Config File
+## BASIC IDEA
+Our core idea is to build a an AI shopping platform, which has whats-up like chat interface!
+
+1. It can listen users queries and respond with appropriate product.
+2. It can read users text based queries  and respond with appropriate product.
+3. It can process an input video and analyze user query related to the given video then respond with suitable similar products in which user is specifically intrested.
+
+For more details checkout quick video demos [here in demo directory](demo/) or [detilaed documentation here](docs/)
+
+To run the application locally, you must setup following things
+1. CLIP Model (for video processing) 
+2. OLLAMA or OPEN AI account
+3. Neo4j Desktop Version
+4. secrets.toml file
+5. Config File
 
 ## SETUP CLIP Model
 
