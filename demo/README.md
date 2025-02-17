@@ -13,3 +13,5 @@ Our core idea is to build a an AI shopping platform, which has whats-up like cha
 3. It can process an input video and analyze user query related to the given video then respond with suitable similar products in which user is specifically intrested.
 
 For more details checkout long detailed videos uploaded on [google drive here -> (redirect to detailed video page)](https://drive.google.com/drive/folders/1BWalKZCSaris0WHfE1Kek1v-Vgyhs8QK?usp=sharing)
+
+Please email explicitly, to request for video access
